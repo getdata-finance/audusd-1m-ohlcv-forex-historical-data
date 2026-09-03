@@ -4,7 +4,7 @@
 
 ### -> [**Download the full AUDUSD dataset on getdata.finance**](https://getdata.finance/datasets/audusd)
 
-**AUDUSD 1m OHLCV forex historical data** — ultra high-quality 1m OHLCV for **Australian Dollar / US Dollar**. Clean `time, open, high, low, close, volume` CSV for backtesting, algorithmic trading and quantitative research.
+**AUDUSD 1m OHLCV forex historical data** — ultra high-quality 1m OHLCV for **Australian Dollar / US Dollar**. Clean `datetime, open, high, low, close, volume` CSV for backtesting, algorithmic trading and quantitative research.
 
 ## Table of contents
 
@@ -22,12 +22,12 @@
 ## Why this dataset?
 
 - **Ultra high-quality 1m OHLCV** for **Australian Dollar / US Dollar** (Forex)
-- **Clean CSV schema** — `time, open, high, low, close, volume` (no gaps in formatting)
+- **Clean CSV schema** — `datetime, open, high, low, close, volume` (no gaps in formatting)
 - **Free evaluation sample** on GitHub (`1m`) · **11 timeframes** on [getdata.finance](https://getdata.finance/datasets/audusd) · **5,263,593** `1m` rows in the full archive
 - Built for **backtesting**, **algorithmic trading** and **quantitative finance** workflows
 - **Weekly refresh** — [getdata.finance](https://getdata.finance) every **Saturday, 8am UTC+0**; GitHub `1m` sample updated in sync
 
-> **Sample on GitHub** · `AUDUSD_1m.csv` (55,440 rows, `2026-07-09` -> `2026-09-02`, 5.54 MB). **Full archive on [getdata.finance](https://getdata.finance/datasets/audusd)** — **5,263,593** `1m` rows, **11 timeframes**, `2012-06-24` -> `2026-09-02`.
+> **Sample on GitHub** · `AUDUSD_1m.csv` (55,440 rows, `2026-07-09` -> `2026-09-02`, 5.54 MB). **Full archive on [getdata.finance](https://getdata.finance/datasets/audusd)** — **5,263,593** `1m` rows (full `1m`: 5,263,593), **11 timeframes**, `2012-06-24` -> `2026-09-02`.
 
 ## Download sample
 
@@ -73,7 +73,7 @@ First and latest rows from the GitHub sample **`AUDUSD_1m.csv`**:
 
 **First rows**
 
-| time | open | high | low | close | volume |
+| datetime | open | high | low | close | volume |
 | --- | --- | --- | --- | --- | --- |
 | 2026-07-09T13:21:00+00:00 | 0.70778 | 0.70783 | 0.70777 | 0.70777 | 109 |
 | 2026-07-09T13:22:00+00:00 | 0.70777 | 0.7078 | 0.70775 | 0.7078 | 109 |
@@ -83,7 +83,7 @@ First and latest rows from the GitHub sample **`AUDUSD_1m.csv`**:
 
 **Last rows**
 
-| time | open | high | low | close | volume |
+| datetime | open | high | low | close | volume |
 | --- | --- | --- | --- | --- | --- |
 | 2026-09-02T01:56:00+00:00 | 0.7148 | 0.71481 | 0.7147 | 0.71471 | 77 |
 | 2026-09-02T01:57:00+00:00 | 0.71471 | 0.71474 | 0.71464 | 0.71464 | 124 |
@@ -95,7 +95,7 @@ First and latest rows from the GitHub sample **`AUDUSD_1m.csv`**:
 
 | Column | Description |
 | --- | --- |
-| `time` | Bar open timestamp (UTC, ISO-8601). |
+| `datetime` | Bar open timestamp (UTC, ISO-8601). |
 | `open` | Opening price of the candlestick bar. |
 | `high` | Highest price during the bar. |
 | `low` | Lowest price during the bar. |
@@ -103,7 +103,7 @@ First and latest rows from the GitHub sample **`AUDUSD_1m.csv`**:
 | `volume` | Tick volume (number of price updates) during the bar. |
 
 ```text
-time,open,high,low,close,volume
+datetime,open,high,low,close,volume
 ```
 
 ## Code examples
@@ -113,11 +113,9 @@ time,open,high,low,close,volume
 ```python
 import pandas as pd
 
-df = pd.read_csv('AUDUSD_1m.csv', parse_dates=['time'])
-df.set_index('time', inplace=True)
+df = pd.read_csv('AUDUSD_1m.csv', parse_dates=['datetime'])
+df.set_index('datetime', inplace=True)
 print(df.describe())
-print(df.resample('1h').agg({'open': 'first', 'high': 'max',
-                              'low': 'min', 'close': 'last', 'volume': 'sum'}).head())
 ```
 
 ### backtrader
@@ -126,8 +124,8 @@ print(df.resample('1h').agg({'open': 'first', 'high': 'max',
 import backtrader as bt
 import pandas as pd
 
-df = pd.read_csv('AUDUSD_1m.csv', parse_dates=['time'])
-df.set_index('time', inplace=True)
+df = pd.read_csv('AUDUSD_1m.csv', parse_dates=['datetime'])
+df.set_index('datetime', inplace=True)
 
 class PandasData(bt.feeds.PandasData):
     params = (('datetime', None), ('open', 'open'), ('high', 'high'),
@@ -145,8 +143,8 @@ cerebro.adddata(PandasData(dataname=df))
 import pandas as pd
 import vectorbt as vbt
 
-df = pd.read_csv('AUDUSD_1m.csv', parse_dates=['time'])
-close = df.set_index('time')['close']
+df = pd.read_csv('AUDUSD_1m.csv', parse_dates=['datetime'])
+close = df.set_index('datetime')['close']
 fast, slow = vbt.MA.run(close, 10), vbt.MA.run(close, 50)
 entries = fast.ma_crossed_above(slow)
 exits = fast.ma_crossed_below(slow)
