@@ -27,7 +27,7 @@
 - Built for **backtesting**, **algorithmic trading** and **quantitative finance** workflows
 - **Weekly refresh** — [getdata.finance](https://getdata.finance) every **Saturday, 8am UTC+0**; GitHub `1m` sample updated in sync
 
-> **Sample on GitHub** · `AUDUSD_1m.csv` (55,440 rows, `2026-07-09` -> `2026-09-02`, 5.54 MB). **Full archive on [getdata.finance](https://getdata.finance/datasets/audusd)** — **5,263,593** `1m` rows (full `1m`: 5,263,593), **11 timeframes**, `2012-06-24` -> `2026-09-02`.
+> **Sample on GitHub** · `AUDUSD_1m.csv` (55,440 rows, `2026-07-09` -> `2026-09-02`, 5.54 MB). **Full archive on [getdata.finance](https://getdata.finance/datasets/audusd)** — **5,263,593** `1m` rows (full `1m`: 5,263,475), **11 timeframes**, `2012-06-24` -> `2026-09-02`.
 
 ## Download sample
 
